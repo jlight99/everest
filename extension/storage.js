@@ -19,7 +19,7 @@ get('my_key', function(result) {
 */
 
 function get(key, callback) {
-  chrome.storage.local.get([key], func);
+  chrome.storage.local.get([key], callback);
 }
 
 
