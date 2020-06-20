@@ -1,16 +1,11 @@
-let changeColour = document.getElementById('changeColour');
+let openGraphs = document.getElementById('openGraphs');
 
-chrome.storage.sync.get('color', function(data) {
-  changeColour.style.backgroundColor = data.color;
-  changeColour.setAttribute('value', data.color);
-});
+openGraphs.onclick = function(element) {
+  chrome.tabs.create({url: chrome.extension.getURL('graphs.html')});
+}
 
-changeColour.onclick = function(element) {
-  alert('clicked');
-  let colour = element.target.value;
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.executeScript(
-      tabs[0].id,
-      {code: 'document.body.style.backgroundColor = "' + colour + '";'});
-  });
-};
+let openSettings = document.getElementById('openSettings');
+
+openSettings.onclick = function(element) {
+  chrome.tabs.create({url: chrome.extension.getURL('settings.html')});
+}
