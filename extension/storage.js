@@ -17,11 +17,69 @@ get('my_key', function(result) {
   console.log(result);
 });
 */
-
 function get(key, callback) {
   chrome.storage.local.get([key], callback);
 }
 
+function del(key, callback) {
+  chrome.storage.local.remove([key], youtube)
+}
+
+const SESSION_CONTINUE_MS = 5 * 60 * 1000;
+const DISTRACTED_KEY = "our_appname_distracted_for";
+
+function addToBlackList(domain, callback) {
+
+}
+
+function removeFromBlackList(domain, callback) {
+
+}
+
+function getBlackList(callback) {
+
+}
+
+function isInBlackList(domain, callback) {
+
+}
+
+function addLimit(domain, minutes, callback) {
+
+}
+
+function removeLimit(domain, callback) {
+
+}
+
+function getLimit(domain, callback) {
+  
+}
+
+function getLimits(callback) {
+  
+}
+
+function distractedFor() {
+  var d = new Date().getTime();
+  if (d > distracted.timestamp + SESSION_CONTINUE_MS) {
+    distracted.elapsed = 0
+  }
+  distracted.elapsed += DISTRACTED_UPDATE_SECONDS;
+  distracted.timestamp = d;
+  save(DISTRACTED_KEY, distracted);
+}
+
+function getDistracted(callback) {
+  if (distracted.timestamp == 0) {
+    get(DISTRACTED_KEY, function(value) {
+      distracted = value;
+      callback(distracted.elapsed);
+    })
+  } else {
+    callback(distracted.elapsed);
+  }
+}
 
 /*
   K_DATA: {

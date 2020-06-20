@@ -25,14 +25,19 @@ function updateStorage() {
 }
 
 function great() {
-  console.log("hi");
-  console.log(getDistracted());
+  console.log("great");
+  getDistracted(function(value) {
+    console.log("got:");
+    console.log(value);
+  })
 }
 
-distractedFor(5, great);
-distractedFor(20, great);
-distractedFor(5, great);
-distractedFor(20, great);
+distractedFor(5);
+distractedFor(20);
+distractedFor(5);
+distractedFor(20);
+
+great();
 
 
 
