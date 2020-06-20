@@ -20,24 +20,25 @@ chrome.runtime.onInstalled.addListener(function () {
   });
 });
 
-function updateStorage() {
-  save();
-}
+// function updateStorage() {
+//   save();
+// }
 
-function great() {
-  console.log("great");
-  getDistracted(function(value) {
-    console.log("got:");
-    console.log(value);
-  })
-}
-
-distractedFor(5);
-distractedFor(20);
-distractedFor(5);
-distractedFor(20);
-
-great();
+// function great() {
+//   console.log("great");
+//   getDistracted(function(value) {
+//     console.log("got:");
+//     console.log(value);
+//   })
+// }
+// // chrome.storage.local.clear();
+// distractedFor(function() {
+//   console.log("done saving");
+// });
+// setTimeout(distractedFor, 5000);
+// distractedFor();
+// distractedFor();
+// great();
 
 
 

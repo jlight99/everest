@@ -1,1 +1,2 @@
 const DISTRACTED_UPDATE_SECONDS = 5
+const NO_LIMIT = -1;
