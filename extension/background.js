@@ -20,10 +20,10 @@ chrome.runtime.onInstalled.addListener(function () {
   });
 });
 
-// function updateStorage() {
-//   save();
-// }
 
+/**
+ * Testing distracted time
+ */
 // function great() {
 //   console.log("great");
 //   getDistracted(function(value) {
@@ -41,6 +41,66 @@ chrome.runtime.onInstalled.addListener(function () {
 // great();
 
 
+/**
+ * Testing limits
+ */
+// getLimits(function(limits) {
+//   console.log("limits:");
+//   console.log(limits);
+// });
+// addLimit("instagram.com", 60, function(v) {
+//   addLimit("twitter.com", 60, function(v) {
+//     addLimit("bimesh.dev", 15, function(v) {
+//       getLimits(function(limits) {
+//         console.log("add x3 limits:");
+//         console.log(limits);
+//         removeLimit("instagram.com", function() {
+//           getLimits(function(limits) {
+//             console.log("add x3, r x1 limits:");
+//             console.log(limits);
+//           });
+//           getLimit("bimesh.dev", function(limit) {
+//             console.log("bimesh limit:");
+//             console.log(limit);
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
 
-// updateStorage();
+/**
+ * Testing blacklist
+ */
+// getBlackList(function(bl) {
+//   console.log("blacklist:");
+//   console.log(bl);
+// });
+// addToBlackList("instagram.com", function(v) {
+//   addToBlackList("twitter.com", function(v) {
+//     addToBlackList("bimesh.dev", function(v) {
+//       isInBlackList("bimesh.dev", function(t) {
+//         console.log("bimesh in blacklist:");
+//         console.log(t);
+//       });
+//       getBlackList(function(bl) {
+//         console.log("add x3 blacklist:");
+//         console.log(bl);
+//         removeFromBlackList("instagram.com", function() {
+//           getBlackList(function(bl) {
+//             console.log("add x3, r x1 limits:");
+//             console.log(bl);
+//           });
+//           isInBlackList("instagram.com", function(t) {
+//             console.log("instagram in blacklist:");
+//             console.log(t);
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
+
+
+
 // newEntry(2012, 5, 30, 12, "youtube.com", 1263);

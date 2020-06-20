@@ -1,5 +1,11 @@
 // public api
 
+/**
+ * known problems:
+ * if you call an adding api multiple times in a row quickly, it will only save
+ * the last one -> need some form of locking / different approach
+ */
+
 /*
 Example usage:
 save('my_key', {ellen: "is a potatoe"});
@@ -40,7 +46,7 @@ function addToBlackList(domain, callback) {
     if (!blacklist.includes(domain)) {
       blacklist.push(domain);
     }
-    save(OUR_APP_BLACKLIST_KEY, blacklist, domain);
+    save(OUR_APP_BLACKLIST_KEY, blacklist, callback);
   });
 }
 
@@ -48,7 +54,7 @@ function removeFromBlackList(domain, callback) {
   getBlackList(function(blacklist) {
     idx = blacklist.indexOf(domain);
     if (idx != -1) {
-      blacklist = blacklist.splice(idx, 1);
+      blacklist.splice(idx, 1);
       save(OUR_APP_BLACKLIST_KEY, blacklist, callback);
     } else {
       callback(blacklist);
@@ -125,10 +131,15 @@ function distractedFor(callback) {
     }
     distracted.elapsed += DISTRACTED_UPDATE_SECONDS;
     distracted.timestamp = d;
-    save(OUR_APP_DISTRACTED_KEY, distracted, callback);
+    save(OUR_APP_DISTRACTED_KEY, distracted, function(distracted) {
+      callback(distracted.elapsed);
+    });
   });
 }
 
+/**
+ * @param callback seconds: number -> anything
+ */
 function getDistracted(callback) {
   getDistractedInternal(function(distracted) {
     callback(distracted.elapsed);
