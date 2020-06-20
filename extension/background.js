@@ -16,3 +16,22 @@ chrome.runtime.onInstalled.addListener(function() {
     }]);
   });
 });
+
+function updateStorage() {
+  save();
+}
+
+function great() {
+  console.log("hi");
+  console.log(getDistracted());
+}
+
+distractedFor(5, great);
+distractedFor(20, great);
+distractedFor(5, great);
+distractedFor(20, great);
+
+
+
+// updateStorage();
+// newEntry(2012, 5, 30, 12, "youtube.com", 1263);
