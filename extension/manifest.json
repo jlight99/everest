@@ -4,7 +4,7 @@
     "description": "Increase productivity!",
     "permissions": ["activeTab", "declarativeContent", "storage"],
     "background": {
-        "scripts": ["background.js"],
+        "scripts": ["storage.js", "background.js"],
         "persistent": false
     },
     "page_action": {
