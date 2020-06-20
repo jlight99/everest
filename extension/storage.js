@@ -33,10 +33,12 @@ function del(key, callback) {
   chrome.storage.local.remove([key], callback)
 }
 
-const K_DATA = 'our_appname_data';
 const SECONDS_IN_HOUR = 60 * 60;
 const EMPTY = {};
 const SESSION_CONTINUE_MS = 5 * 60 * 1000;
+
+// chrome.storage keys
+const OUR_APP_ANALYTICS_DATA = 'our_appname_analytics_data';
 const OUR_APP_DISTRACTED_KEY = "our_appname_distracted_for";
 const OUR_APP_BLACKLIST_KEY = "our_appname_blacklist_key";
 const OUR_APP_LIMITS_KEY = "our_appname_limits_key";
@@ -166,15 +168,35 @@ function printS(key, val) {
   return printInternal;
 }
 
-function newEntry(year, month, day, hour, site, seconds) {
-  // FIX: default init prob
-  cur_data[year][month][day][hour][site] =
-      Math.min(SECONDS_IN_HOUR,
-          (cur_data[year][month][day][hour][site] || 0) + seconds);
-  // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, cur_data[year][month][day][hour][site]);
-  save(K_DATA, cur_data, function() {
-    get();
+function getAnalytics(callback) {
+  get(OUR_APP_ANALYTICS_DATA, function(data) {
+    console.log("analytics from storage:");
+    console.log(data);
+    if (!data || !data[OUR_APP_ANALYTICS_DATA]) {
+      console.log("analytics not found in storage");
+      callback({});
+    } else {
+      callback(data[OUR_APP_ANALYTICS_DATA]);
+    }
   });
+}
+
+function g(map, keys, def = {}) {
+  for (key in keys) {
+    if (!(key in map)) {
+      map[key] = def;
+    }
+    map = map[key];
+  }
+  return map;
+}
+
+function newEntry(year, month, day, hour, site, seconds) {
+  // g(cur_data, [year, month, day, hour])[site] =
+  //     Math.min(SECONDS_IN_HOUR,
+  //         (cur_data[year][month][day][hour][site] || 0) + seconds);
+  // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, cur_data[year][month][day][hour][site]);
+  // save(K_DATA, cur_data, callback);
 }
 
 // "private" functions
