@@ -77,6 +77,56 @@ function getBlackList(callback) {
   });
 }
 
+function browsing(domain, callback) {
+  var d = new Date();
+  function handleUpdate() {
+    newEntry(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDay(),
+      d.getHours(),
+      domain,
+      DISTRACTED_UPDATE_SECONDS
+    );
+    addDistracted(domain, function() {
+      isInBlackList(domain, function(bool) {
+        if (bool) {
+          addDistracted(DISTRACTED_DOMAIN);
+        }
+      });
+    });
+    // TODO add blacklist_total_time
+  }
+  function handleNotify() {
+    function wrapper(val, func) {
+      if (val) {
+        callback(val);
+      } else {
+        func();
+      }
+    }
+    exceedsDailyLimit(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDay(),
+      d.getHours(),
+      domain, function(val) {
+        wrapper(val, function() {
+          exceedsDistractedLimit(domain, function(val) {
+            wrapper(val, function() {
+              isInBlackList(domain, function() {
+                exceedsDistractedLimit(DISTRACTED_DOMAIN, callback);
+              });
+            });
+          });
+        });
+      });
+      // tried so hard to make this aesthetic -_-
+  }
+  handleUpdate();
+  handleNotify();
+}
+
 function isInBlackList(domain, callback) {
   getBlackList(function(blacklist) {
     callback(blacklist.includes(domain));
@@ -135,17 +185,26 @@ function getLimits(callback) {
   });
 }
 
-function distractedFor(callback) {
+function addDistracted(domain, callback) {
   var d = new Date().getTime();
-  getDistractedInternal(function(distracted) {
-    console.log(distracted);
+  getDistractedInternal(function(distractedMap) {
+    console.log("addDistracted");
+    console.log(distractedMap);
+    distracted = distractedMap[domain];
+    if (!distracted || !distracted.elapsed || !distracted.timestamp) {
+      distracted = {timestamp: 0, elapsed: 0};
+    }
     if (d > distracted.timestamp + SESSION_CONTINUE_MS) {
       distracted.elapsed = 0
     }
     distracted.elapsed += DISTRACTED_UPDATE_SECONDS;
     distracted.timestamp = d;
-    save(OUR_APP_DISTRACTED_KEY, distracted, function(distracted) {
-      callback(distracted.elapsed);
+    distractedMap[domain] = distracted;
+
+    save(OUR_APP_DISTRACTED_KEY, distractedMap, function() {
+      if (callback) {
+        callback(distracted.elapsed);
+      }
     });
   });
 }
@@ -154,8 +213,25 @@ function distractedFor(callback) {
  * @param callback seconds: number -> anything
  */
 function getDistracted(callback) {
-  getDistractedInternal(function(distracted) {
-    callback(distracted.elapsed);
+  getDistractedInternal(callback);
+}
+
+/**
+ * @param {*} callback only calls this IF the usage exceeds the limit
+ */
+function exceedsDistractedLimit(domain, callback) {
+  getDistractedInternal(function(data) {
+    function compareLimit(limit) {
+      if (data[domain].timestamp + SESSION_CONTINUE_MS < new Date().getTime()) {
+        return;
+      }
+      if (limit != NO_LIMIT && data[domain].elapsed > limit * 60) {
+        callback({limit: limit, domain: domain, type: LIMIT_EXCEEDED_TYPE_CONTINUOUS});
+      }
+    }
+    if (domain in data) {
+      getLimit(domain, true, compareLimit);
+    }
   });
 }
 
@@ -195,19 +271,20 @@ function newEntry(year, month, day, hour, site, seconds, callback) {
   // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, hourMap[site]);
 }
 
-/**
- * @param {*} callback only calls this IF the usage exceeds the limit
- */
 function exceedsDailyLimit(year, month, day, hour, domain, callback) {
   getAnalytics(function(data) {
     function compareLimit(limit) {
       if (limit != NO_LIMIT && m[domain] > limit * 60) {
-        callback(domain);
+        callback({limit: limit, domain: domain, type: LIMIT_EXCEEDED_TYPE_OVERALL});
+      } else {
+        callback(null);
       }
     }
     m = getNestedMap(data, [year, month, day, hour]);
     if (domain in m) {
       getLimit(domain, false, compareLimit);
+    } else {
+      callback(null);
     }
   });
 }
@@ -217,11 +294,9 @@ function getDistractedInternal(callback) {
   get(OUR_APP_DISTRACTED_KEY, function(distracted) {
     console.log("from storage:");
     console.log(distracted);
-    if (!distracted || !distracted[OUR_APP_DISTRACTED_KEY] ||
-        !distracted[OUR_APP_DISTRACTED_KEY].timestamp ||
-        !distracted[OUR_APP_DISTRACTED_KEY].elapsed) {
+    if (!distracted || !distracted[OUR_APP_DISTRACTED_KEY]) {
       console.log("distracted not found in storage");
-      callback({timestamp: 0, elapsed: 0});
+      callback({});
     } else {
       callback(distracted[OUR_APP_DISTRACTED_KEY]);
     }

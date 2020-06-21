@@ -1,40 +1,71 @@
+function ourAppUpdate(tabs) {
+  console.log("hi");
+  console.log(tabs);
+  if (!tabs || !tabs.length) return;
+  let domain = tabs[0].url; // TODO parse url nicely into domain
+  console.log(domain);
+
+  function createNotification(props) {
+    function formatMessage() {
+      let notif_domain = props.domain;
+      if (notif_domain == DISTRACTED_DOMAIN) {
+        notif_domain = "distrating websites";
+      }
+      return 'you have exceeded your limit of ' + props.limit + ' minutes for ' + notif_domain;
+    }
+    if (!props || !props.domain || !props.limit || !props.type) return;
+
+    var opt = {
+      iconUrl: "images/get_started48.png",
+      type: 'basic',
+      title: 'stop being distracted!',
+      message: formatMessage(),
+      priority: 1,
+      requireInteraction: true // cool :P
+    };
+    chrome.notifications.create('notify1', opt, function() {
+        console.log("notify1 failed, last error: ", chrome.runtime.lastError); 
+      });
+  }
+
+  function createAlarm() {
+    // TODO replace alarm before publishing since alarms only fire once a minute in prod chrome
+    // ref: https://developer.chrome.com/apps/app_codelab_alarms
+    chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: DISTRACTED_UPDATE_SECONDS / 60 });
+    chrome.alarms.onAlarm.addListener(function() {
+      console.log("calling browsing");
+      browsing(domain, createNotification);
+    });
+  }
+
+  isInBlackList(domain, function(bool) {
+    if (bool) {
+      createAlarm();
+    } else {
+      chrome.alarms.clearAll();
+    }
+  });
+}
+
 chrome.runtime.onInstalled.addListener(function () {
   chrome.tabs.onUpdated.addListener(function () {
-    chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => {
-      if (tabs.length == 0) return;
-      let url = tabs[0].url;
-      let blacklist = ['facebook', 'youtube'];
-      let isBlacklisted = false;
-      for (var i = 0; i < blacklist.length; i++) {
-        if (url.includes(blacklist[i])) {
-          isBlacklisted = true;
-          break;
-        }
-      }
-      if (isBlacklisted) {
-        // chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: 0.3 });
-        // chrome.alarms.onAlarm.addListener(function () {
-        //   alert("why are you distracted smh");
-        // });
-        var opt = {
-          iconUrl: "images/get_started48.png",
-          type: 'basic',
-          title: 'stop being distracted!',
-          message: 'smh get back to work',
-          priority: 1,
-          requireInteraction: true
-        };
-        chrome.notifications.create('notify1', opt, function() { console.log("Last error:", chrome.runtime.lastError); });
-
-        // chrome.tabs.executeScript({
-        //   file: "insert.js"
-        // });
-      } else {
-        chrome.alarms.clearAll();
-      }
-    });
+    chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => ourAppUpdate(tabs));
   });
 });
+
+console.log("let's get started");
+
+/**
+ * Testing background updating
+ */
+// addToBlackList("https://www.facebook.com/", function() {
+//   addToBlackList("https://www.google.ca/", function() {
+//     getBlackList(function(bl) {
+//       console.log(bl);
+//     });
+//   });
+// });
+// 
 
 
 /**
