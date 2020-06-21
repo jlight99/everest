@@ -173,11 +173,12 @@ function getAnalytics(callback) {
   });
 }
 
-function getNestedMap(map, keys, def = {}) {
+function getNestedMap(map, keys, def = function() {return {};}) {
   var temp = map;
-  for (key in keys) {
+  for (k in keys) {
+    key = keys[k];
     if (!(key in temp)) {
-      temp[key] = def;
+      temp[key] = def();
     }
     temp = temp[key];
   }
@@ -190,6 +191,8 @@ function newEntry(year, month, day, hour, site, seconds, callback) {
     hourMap[site] = Math.min(SECONDS_IN_HOUR, (hourMap[site] || 0) + seconds);
     save(OUR_APP_ANALYTICS_DATA, data, callback);
   });
+  // TODO make newEntry faster
+  // this is trying to save just the updated key
   // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, hourMap[site]);
 }
 

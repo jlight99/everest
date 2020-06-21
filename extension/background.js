@@ -121,8 +121,6 @@ chrome.runtime.onInstalled.addListener(function () {
  * Testing analytics
  */
 
-// chrome.storage.local.clear();
-// 
 // newEntry(2012, 5, 30, 12, "youtube.com", 1263, function(data) {
 //   console.log("put");
 //   console.log(data);
