@@ -31,6 +31,9 @@ function getTodayData(callback) {
   getAnalytics(function(data) {
     console.log("boo");
     console.log(data);
+    console.log(date.getFullYear());
+    console.log(date.getMonth());
+    console.log(date.getDate());
     callback(data[date.getFullYear()][date.getMonth()][date.getDate()]);
   });
 }
@@ -41,6 +44,8 @@ function getTodayAppData(callback) {
   getTodayData(function(data) { // expected data format: {hour: [site: seconds, site2: seconds]}
     todayAppData = mapTodayDataToAppData(data);
     todayAppTimes = getTodayAppTimeData(data);
+    console.log("appdatalog");
+    console.log(data);
     getTodayProductiveTimesData(data, function(todayProductiveTimes) {
       callback(todayAppData, todayAppTimes, todayProductiveTimes);
     });
@@ -88,7 +93,7 @@ function getTodayProductiveTimesData(data, callback) {
     for (var i = 0; i < 24; i++) {
       todayAppData[i] = [hours[i], 0, 0];
     }
-
+    
     for (const [hour, siteTimes] of Object.entries(data)) {
       for (const [site, time] of Object.entries(siteTimes)) {
         if (blacklist.includes(site)) {
@@ -144,6 +149,9 @@ function todayAppTime() {
 
 function todayHourTime(stacked = false) {
   getTodayAppData(function(data1, data2, data3) {
+    console.log("hi22");
+    console.log(data3);
+    
     var data = google.visualization.arrayToDataTable(data3);
     var options = {
       chart: {

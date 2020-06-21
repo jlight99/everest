@@ -66,14 +66,16 @@ console.log("let's get started");
 /**
  * Testing background updating
  */
-// addToBlackList("https://www.facebook.com/", function() {
-//   addToBlackList("https://www.google.ca/", function() {
-//     getBlackList(function(bl) {
-//       console.log(bl);
-//     });
-//   });
-// });
-// 
+function addTestBlackLists() {
+  addToBlackList("https://www.facebook.com/", function() {
+    addToBlackList("https://www.google.ca/", function() {
+      getBlackList(function(bl) {
+        console.log(bl);
+      });
+    });
+  });
+}
+
 
 // chrome.runtime.onInstalled.addListener(function () {
 //   chrome.tabs.onUpdated.addListener(function () {
@@ -158,16 +160,19 @@ console.log("let's get started");
 //   console.log("limits:");
 //   console.log(limits);
 // });
-// addLimit("https://www.facebook.com/", 1, true, function(v) {
-//   addLimit("https://www.facebook.com/", 1, false, function(v) {
-//     addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
-//       getLimits(function(limits) {
-//         console.log("add x3 limits:");
-//         console.log(limits);
-//       });
-//     });
-//   });
-// });
+function addTestLimits() {
+  addLimit("https://www.facebook.com/", 1, true, function(v) {
+    addLimit("https://www.facebook.com/", 1, false, function(v) {
+      addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
+        getLimits(function(limits) {
+          console.log("add x3 limits:");
+          console.log(limits);
+        });
+      });
+    });
+  });
+}
+// addTestLimits();
 
 /**
  * Testing blacklist
@@ -204,30 +209,44 @@ console.log("let's get started");
 /**
  * Testing analytics
  */
+function addFakes() {
+  addTestLimits();
+  addTestBlackLists();
+  fakeData(0, fakeData);
+}
 
-// newEntry(2012, 5, 30, 12, "youtube.com", 1263, function(data) {
-//   console.log("put");
-//   console.log(data);
-//   getAnalytics(function(data) {
-//     console.log("get");
-//     console.log(data);
-//   });
-//   newEntry(2020, 12, 2, 17, "youtube.com", 5, function() {
-//     getAnalytics(function(data) {
-//       console.log(data);
-//     });
-//     newEntry(2020, 12, 2, 17, "feacbook.com", 5, function() {
-//       getAnalytics(function(data) {
-//         console.log(data);
-//       });
-//       newEntry(2020, 12, 2, 17, "feacbook.com", 5, function() {
-//         getAnalytics(function(data) {
-//           console.log(data);
-//         });
-//       });
-//     });
-//   });
-// });
+function fakeData(h, callback) {
+  if (h >= 24) {
+    return;
+  }
+  newEntry(2020, 5, 21, h, "https://google.com/", Math.floor(Math.random() * 400), function(data) {
+    console.log("put");
+    console.log(data);
+    getAnalytics(function(data) {
+      console.log("get");
+      console.log(data);
+    });
+    newEntry(2020, 5, 21, h, Math.random() > 0.5 ? "https://power-rangers.com/" : "https://stadia.com", Math.floor(Math.random() * 40), function() {
+      getAnalytics(function(data) {
+        console.log(data);
+      });
+      newEntry(2020, 5, 21, h, Math.random() > 0.5 ? "https://instagram.com/" : "https://techradar.com", Math.floor(Math.random() * 800), function() {
+        getAnalytics(function(data) {
+          console.log(data);
+        });
+        newEntry(2020, 5, 21, h, "https://www.facebook.com/", Math.floor(Math.random() * 500), function() {
+          getAnalytics(function(data) {
+            console.log(data);
+          });
+          fakeData(h + 1, callback);
+        });
+      });
+    });
+  });
+}
+
+// chrome.storage.local.clear();
+addFakes();
 
 /**
  * Testing app overall limit

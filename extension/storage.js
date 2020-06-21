@@ -255,6 +255,7 @@ function getAnalytics(callback) {
   get(OUR_APP_ANALYTICS_DATA, function(data) {
     console.log("analytics from storage:");
     console.log(data);
+    console.log(data[OUR_APP_ANALYTICS_DATA]);
     if (!data || !data[OUR_APP_ANALYTICS_DATA]) {
       console.log("analytics not found in storage");
       callback({});
