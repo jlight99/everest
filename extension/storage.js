@@ -195,6 +195,9 @@ function newEntry(year, month, day, hour, site, seconds, callback) {
   // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, hourMap[site]);
 }
 
+/**
+ * @param {*} callback only calls this IF the usage exceeds the limit
+ */
 function exceedsDailyLimit(year, month, day, hour, domain, callback) {
   getAnalytics(function(data) {
     function compareLimit(limit) {
