@@ -1,9 +1,20 @@
-google.charts.load('current', {'packages':['bar']});
+google.charts.load('current', {'packages':['bar', 'corechart']});
 google.charts.setOnLoadCallback(todayHourTimeStacked);
 
-function drawChart(data, options) {
+// function drawChart(data, options) {
+//   var chart = new google.charts.Bar(document.getElementById('the_big_boi'));
+//   chart.draw(data, google.charts.Bar.convertOptions(options));
+// }
+
+function drawBarChart(data, options) {
   var chart = new google.charts.Bar(document.getElementById('the_big_boi'));
   chart.draw(data, google.charts.Bar.convertOptions(options));
+}
+
+function drawPieChart(data, options) {
+  var chart = new google.visualization.PieChart(document.getElementById('the_big_boi'));
+  // chart.draw(data, google.visualization.PieChart.convertOptions(options));
+  chart.draw(data, options);
 }
 
 data = [];
@@ -120,7 +131,7 @@ function getAppTimeData() {
   });
 }
 
-function todayAppTime() {
+function todayAppTime(chartType) {
   getTodayAppData(function(data1, data2, data3) {
     var arrData = getAppTimeArrayFromMap(data2);
     var data = google.visualization.arrayToDataTable(arrData);
@@ -135,14 +146,18 @@ function todayAppTime() {
       axes: {
         y: {
           time: {label: 'Time (minutes)'},
-        }
+        },
       }
     };
-    drawChart(data, options);
+    if (chartType == 'pie') {
+      drawPieChart(data, options);
+    } else {
+      drawBarChart(data, options);
+    }
   });
 }
 
-function todayHourTime(stacked = false) {
+function todayHourTime(chartType, stacked = false) {
   getTodayAppData(function(data1, data2, data3) {
     var data = google.visualization.arrayToDataTable(data3);
     var options = {
@@ -151,32 +166,57 @@ function todayHourTime(stacked = false) {
       },
       isStacked: stacked
     };
-    drawChart(data, options);
+    if (chartType == 'pie') {
+      drawPieChart(data, options);
+    } else {
+      drawBarChart(data, options);
+    }
   });
 }
 
-function todayHourTimeStacked() {
-  todayHourTime(true);
+function todayHourTimeStacked(chartType) {
+  todayHourTime(chartType, true);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  var link = document.getElementById('todayAppTime');
+  var link = document.getElementById('todayAppTimeBar');
   link.addEventListener('click', function() {
-    todayAppTime();
+    todayAppTime('bar');
   });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var link = document.getElementById('todayHourTime');
+  var link = document.getElementById('todayHourTimeBar');
   link.addEventListener('click', function() {
-    todayHourTime();
+    todayHourTime('bar');
   });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var link = document.getElementById('todayHourTimeStacked');
+  var link = document.getElementById('todayHourTimeStackedBar');
   link.addEventListener('click', function() {
-    todayHourTimeStacked();
+    todayHourTimeStacked('bar');
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  var link = document.getElementById('todayAppTimePie');
+  link.addEventListener('click', function() {
+    todayAppTime('pie');
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  var link = document.getElementById('todayHourTimePie');
+  link.addEventListener('click', function() {
+    todayHourTime('pie');
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  var link = document.getElementById('todayHourTimeStackedPie');
+  link.addEventListener('click', function() {
+    todayHourTimeStacked('pie');
   });
 });
 

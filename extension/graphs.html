@@ -28,8 +28,11 @@
     }
 
     #chart-buttons {
+      margin-left: 180px;
       display: flex;
       flex-direction: row;
+      justify-content: center;
+      align-items: center;
     }
 
     button.chart {
@@ -38,6 +41,13 @@
 
     button.chart:focus {
       border: green;
+    }
+
+    .why {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
     }
   </style>
 </head>
@@ -49,11 +59,20 @@
       <img src="https://img.icons8.com/android/24/000000/refresh.png"/>
     </button> -->
     <div id="the_big_boi"></div>
-  </div>
+  </div class="why">
     <div id="chart-buttons">
-    <button type="button" class="btn btn-primary chart" id="todayAppTime">Today App Usage</button>
-    <button type="button" class="btn btn-primary chart" id="todayHourTime">Today Hourly Usage Split</button>
-    <button type="button" class="btn btn-primary chart" id="todayHourTimeStacked">Today Hourly Usage Stacked</button>
+      <div>
+        <button type="button" class="btn btn-primary chart" id="todayAppTimeBar">Today App Usage Bar</button>
+        <button type="button" class="btn btn-primary chart" id="todayAppTimePie">Today App Usage Pie</button>
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary chart" id="todayHourTimeBar">Today Hourly Usage Split Bar</button>
+        <button type="button" class="btn btn-primary chart" id="todayHourTimePie">Today Hourly Usage Split Pie</button>
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary chart" id="todayHourTimeStackedBar">Today Hourly Usage Stacked Bar</button>
+        <button type="button" class="btn btn-primary chart" id="todayHourTimeStackedPie">Today Hourly Usage Stacked Pie</button>
+      </div>
   </div>
   <script type="text/javascript" src="constants.js"></script>
   <script type="text/javascript" src="storage.js"></script>
