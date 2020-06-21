@@ -20,8 +20,12 @@ users can configure their list of blacklisted "distraction" sites and set time l
 ![settings page edit](https://github.com/jlight99/everest/blob/master/extension/images/screenshots/settings-edit.png?raw=true)
 
 ### acknowledgements:
-<a href="https://icons8.com/icon/773/list">List icon by Icons8</a>
-<a href="https://icons8.com/icon/15469/refresh">Refresh icon by Icons8</a>
+<div>
+  <a href="https://icons8.com/icon/773/list">List icon by Icons8</a>
+</div>
+<div>
+  <a href="https://icons8.com/icon/15469/refresh">Refresh icon by Icons8</a>
+</div>
 <div>
   Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 </div>
