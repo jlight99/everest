@@ -56,7 +56,6 @@ chrome.runtime.onInstalled.addListener(function () {
 // distractedFor();
 // great();
 
-
 /**
  * Testing limits
  */
@@ -64,18 +63,18 @@ chrome.runtime.onInstalled.addListener(function () {
 //   console.log("limits:");
 //   console.log(limits);
 // });
-// addLimit("instagram.com", 60, function(v) {
-//   addLimit("twitter.com", 60, function(v) {
-//     addLimit("bimesh.dev", 15, function(v) {
+// addLimit("instagram.com", 60, false, function(v) {
+//   addLimit("twitter.com", 60, false, function(v) {
+//     addLimit("bimesh.dev", 15, true, function(v) {
 //       getLimits(function(limits) {
 //         console.log("add x3 limits:");
 //         console.log(limits);
-//         removeLimit("instagram.com", function() {
+//         removeLimit("instagram.com", false, function() {
 //           getLimits(function(limits) {
 //             console.log("add x3, r x1 limits:");
 //             console.log(limits);
 //           });
-//           getLimit("bimesh.dev", function(limit) {
+//           getLimit("bimesh.dev", true, function(limit) {
 //             console.log("bimesh limit:");
 //             console.log(limit);
 //           });

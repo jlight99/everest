@@ -83,15 +83,21 @@ function isInBlackList(domain, callback) {
   });
 }
 
-function addLimit(domain, minutes, callback) {
+function addLimit(domain, minutes, singleSession, callback) {
   getLimits(function(limits) {
+    if (singleSession) {
+      domain = OUR_APP_SINGLE_SESSION_PREFIX + domain;
+    }
     limits[domain] = minutes;
     save(OUR_APP_LIMITS_KEY, limits, callback);
   });
 }
 
-function removeLimit(domain, callback) {
+function removeLimit(domain, singleSession, callback) {
   getLimits(function(limits) {
+    if (singleSession) {
+      domain = OUR_APP_SINGLE_SESSION_PREFIX + domain;
+    }
     if (domain in limits) {
       delete limits[domain];
       save(OUR_APP_LIMITS_KEY, limits, callback);
@@ -101,8 +107,11 @@ function removeLimit(domain, callback) {
   });
 }
 
-function getLimit(domain, callback) {
+function getLimit(domain, singleSession, callback) {
   getLimits(function(limits) {
+    if (singleSession) {
+      domain = OUR_APP_SINGLE_SESSION_PREFIX + domain;
+    }
     if (domain in limits) {
       callback(limits[domain]);
     } else {
