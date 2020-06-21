@@ -6,70 +6,158 @@ function drawChart(data, options) {
   chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
-data = []
+data = [];
 
-function todayAppTime() {
-  var data = google.visualization.arrayToDataTable([
-    ['App', 'Time (hours)'],
-    ['Youtube', 1.5],
-    ['Facebook', 0.75],
-    ['Instagram', 2],
-    ['Amazon', 0.5]
-  ]);
-  var options = {
-    chart: {
-      title: "Today's app usage",
-      subtitle: "I'm a subtitle :)",
-    },
-    legend: { position: 'none' },
-    series: {
-      0: { axis: 'time' }
-    },
-    axes: {
-      y: {
-        time: {label: 'Time (hours)'},
+// data: map<year, map<month, map<day, map<hour, map<site, seconds>>>>>
+
+function getBlacklist(callback) {
+  var blacklistKey = "our_appname_blacklist_key";
+  chrome.storage.local.get(blacklistKey, function(blacklist) {
+    if (!blacklist || !blacklist[blacklistKey]) {
+      blacklist = ['facebook', 'youtube', 'fanfiction'];
+      chrome.storage.local.set({[blacklistKey]: blacklist}, function() {
+        console.log('initialized empty blacklist!');
+        callback(blacklist);
+      });
+    } else {
+      blacklist = blacklist[blacklistKey];
+      callback(blacklist);
+    }
+  });
+}
+
+function getTodayData(callback) {
+  var date = new Date();
+  chrome.storage.local.get(['our_appname_analytics_data'], function(data) {
+    if (data && data['our_appname_analytics_data'] && data['our_appname_analytics_data'][date.getFullYear()]
+    && data['our_appname_analytics_data'][date.getFullYear()][date.getMonth()] && data['our_appname_analytics_data'][date.getFullYear()][date.getMonth()][date.getDate()]) {
+      callback(data['our_appname_analytics_data'][date.getFullYear()][date.getMonth()][date.getDate()]);
+    } else {
+      callback({});
+    }
+  });
+}
+
+function getTodayAppData(callback) {
+  var todayAppData = {};
+  var todayAppTimes = {};
+  getTodayData(function(data) { // expected data format: {hour: [site: seconds, site2: seconds]}
+    todayAppData = mapTodayDataToAppData(data);
+    todayAppTimes = getTodayAppTimeData(data);
+    getTodayProductiveTimesData(data, function(todayProductiveTimes) {
+      callback(todayAppData, todayAppTimes, todayProductiveTimes);
+    });
+  });
+}
+
+function mapTodayDataToAppData(data) {
+  var todayAppData = {}; // by hours, by site, by min
+  for (var i = 0; i < 24; i++) {
+    todayAppData[i] = {};
+  }
+  for (const [hour, siteTimes] of Object.entries(data)) {
+    for (const [site, time] of Object.entries(siteTimes)) {
+      if (site in todayAppData[hour]) {
+        todayAppData[hour][site] += time;
+      } else {
+        todayAppData[hour][site] = time;
       }
     }
-  };
-  drawChart(data, options);
+  }
+  return todayAppData;
+}
+
+function getTodayAppTimeData(data) {
+  var appTimes = {};
+  for (const [hour, siteTimes] of Object.entries(data)) {
+    for (const [site, time] of Object.entries(siteTimes)) {
+      if (site in appTimes) {
+        appTimes[site] += time;
+      } else {
+        appTimes[site] = time;
+      }
+    }
+  }
+  return appTimes;
+}
+
+function getTodayProductiveTimesData(data, callback) {
+  getBlacklist(function(blacklist) {
+    var todayAppData = []; // by hours, by site, by min
+    var hours = ['12 AM', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', 
+                '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', 
+                '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', 
+                '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM'];
+    for (var i = 0; i < 24; i++) {
+      todayAppData[i] = [hours[i], 0, 0];
+    }
+
+    for (const [hour, siteTimes] of Object.entries(data)) {
+      for (const [site, time] of Object.entries(siteTimes)) {
+        if (blacklist.includes(site)) {
+          todayAppData[hour][2] += time;
+        } else {
+          todayAppData[hour][1] = time;
+        }
+      }
+    }
+    todayAppData.unshift(['App', 'Minutes (productive)', "Minutes (unproductive)"]);
+    callback(todayAppData);
+  });
+}
+
+function getAppTimeArrayFromMap(data) {
+  var arr = [];
+  arr[0] = ['App', 'Time (hours)'];
+  var idx = 1;
+  for (const [site, time] of Object.entries(data)) {
+    arr[idx] = [site, time];
+    idx++;
+  }
+  return arr;
+}
+
+function getAppTimeData() {
+  getTodayAppData(function(todayAppData, todayAppTimes, todayProductiveAppTimes) {
+    getAppTimeArrayFromMap(todayAppTimes);
+  });
+}
+
+function todayAppTime() {
+  getTodayAppData(function(data1, data2, data3) {
+    var arrData = getAppTimeArrayFromMap(data2);
+    var data = google.visualization.arrayToDataTable(arrData);
+    var options = {
+      chart: {
+        title: "Today's app usage",
+        subtitle: "I'm a subtitle :)",
+      },
+      legend: { position: 'none' },
+      series: {
+        0: { axis: 'time' }
+      },
+      axes: {
+        y: {
+          time: {label: 'Time (hours)'},
+        }
+      }
+    };
+    drawChart(data, options);
+  });
 }
 
 function todayHourTime(stacked = false) {
-  var data = google.visualization.arrayToDataTable([
-    ['App', 'Minutes (productive)', "Minutes (unproductive)"],
-    ['12 AM', 0, 15],
-    ['1 AM', 0, 0],
-    ['2 AM', 0, 0],
-    ['3 AM', 0, 60],
-    ['4 AM', 0, 15],
-    ['5 AM', 0, 0],
-    ['6 AM', 0, 0],
-    ['7 AM', 30, 5],
-    ['8 AM', 15, 0],
-    ['9 AM', 60, 0],
-    ['10 AM', 59, 0],
-    ['11 AM', 50, 2],
-    ['12 PM', 15, 30],
-    ['1 PM', 5, 20],
-    ['2 PM', 55, 1],
-    ['3 PM', 60, 0],
-    ['4 PM', 15, 20],
-    ['5 PM', 0, 12],
-    ['6 PM', 0, 5],
-    ['7 PM', 30, 30],
-    ['8 PM', 15, 32],
-    ['9 PM', 60, 0],
-    ['10 PM', 9, 17],
-    ['11 PM', 50, 1]
-  ]);
-  var options = {
-    chart: {
-      title: "Today's hourly usage",
-      subtitle: "I'm a subtitle :)",
-    },
-    isStacked: stacked
-  };
-  drawChart(data, options);
+  getTodayAppData(function(data1, data2, data3) {
+    var data = google.visualization.arrayToDataTable(data3);
+    var options = {
+      chart: {
+        title: "Today's hourly usage",
+        subtitle: "I'm a subtitle :)",
+      },
+      isStacked: stacked
+    };
+    drawChart(data, options);
+  });
 }
 
 function todayHourTimeStacked() {
@@ -96,3 +184,12 @@ document.addEventListener('DOMContentLoaded', function() {
     todayHourTimeStacked();
   });
 });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   var link = document.getElementById('refreshData');
+//   link.addEventListener('click', function() {
+//     getTodayAppData(function(data1, data2, data3) {
+//       console.log("yassss");
+//     });
+//   });
+// });

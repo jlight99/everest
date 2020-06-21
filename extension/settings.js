@@ -4,7 +4,7 @@ getBlackList(function(blacklist) {
     blacklist = ['facebook', 'youtube', 'fanfiction'];
     console.log('blacklist not found!');
   } else {
-    blacklist = blacklist[OUR_APP_BLACKLIST_KEY];
+    blacklist = blacklist[blacklistKey];
   }
   var blacklistElement = document.getElementById('blacklist');
   for (var i = 0; i < blacklist.length; i++) {
