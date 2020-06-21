@@ -28,13 +28,10 @@ function getBlacklist(callback) {
 
 function getTodayData(callback) {
   var date = new Date();
-  chrome.storage.local.get(['our_appname_analytics_data'], function(data) {
-    if (data && data['our_appname_analytics_data'] && data['our_appname_analytics_data'][date.getFullYear()]
-    && data['our_appname_analytics_data'][date.getFullYear()][date.getMonth()] && data['our_appname_analytics_data'][date.getFullYear()][date.getMonth()][date.getDate()]) {
-      callback(data['our_appname_analytics_data'][date.getFullYear()][date.getMonth()][date.getDate()]);
-    } else {
-      callback({});
-    }
+  getAnalytics(function(data) {
+    console.log("boo");
+    console.log(data);
+    callback(data[date.getFullYear()][date.getMonth()][date.getDate()]);
   });
 }
 
@@ -108,10 +105,10 @@ function getTodayProductiveTimesData(data, callback) {
 
 function getAppTimeArrayFromMap(data) {
   var arr = [];
-  arr[0] = ['App', 'Time (hours)'];
+  arr[0] = ['App', 'Time (minutes)'];
   var idx = 1;
   for (const [site, time] of Object.entries(data)) {
-    arr[idx] = [site, time];
+    arr[idx] = [site, time / 60];
     idx++;
   }
   return arr;
@@ -130,7 +127,6 @@ function todayAppTime() {
     var options = {
       chart: {
         title: "Today's app usage",
-        subtitle: "I'm a subtitle :)",
       },
       legend: { position: 'none' },
       series: {
@@ -138,7 +134,7 @@ function todayAppTime() {
       },
       axes: {
         y: {
-          time: {label: 'Time (hours)'},
+          time: {label: 'Time (minutes)'},
         }
       }
     };
@@ -152,7 +148,6 @@ function todayHourTime(stacked = false) {
     var options = {
       chart: {
         title: "Today's hourly usage",
-        subtitle: "I'm a subtitle :)",
       },
       isStacked: stacked
     };
@@ -185,11 +180,21 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// document.addEventListener('DOMContentLoaded', function() {
-//   var link = document.getElementById('refreshData');
-//   link.addEventListener('click', function() {
-//     getTodayAppData(function(data1, data2, data3) {
-//       console.log("yassss");
-//     });
-//   });
-// });
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("yassss");
+  getTodayAppData(function(data1, data2, data3) {
+    console.log("yassss");
+    console.log(data1);
+    console.log(data2);
+    console.log(data3);
+  });
+  // var link = document.getElementById('refreshData');
+  // link.addEventListener('click', function() {
+  //   getTodayAppData(function(data1, data2, data3) {
+  //     console.log("yassss");
+  //     console.log(data1);
+  //     console.log(data2);
+  //     console.log(data3);
+  //   });
+  // });
+});

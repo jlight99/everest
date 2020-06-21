@@ -83,7 +83,7 @@ function browsing(domain, callback) {
     newEntry(
       d.getFullYear(),
       d.getMonth(),
-      d.getDay(),
+      d.getDate(),
       d.getHours(),
       domain,
       DISTRACTED_UPDATE_SECONDS
@@ -112,7 +112,7 @@ function browsing(domain, callback) {
     exceedsDailyLimit(
       d.getFullYear(),
       d.getMonth(),
-      d.getDay(),
+      d.getDate(),
       d.getHours(),
       domain, function(val) {
         wrapper(val, function() {

@@ -21,7 +21,7 @@ getLimits(function(limits) {
   // if (Object.keys(limits).length === 0 && limits.constructor === Object) {
   //   limits = defaultLimits;
   // }
-  
+
   getBlackList(function(blacklist) {
     // if (!blacklist) {
     //   blacklist = ['facebook', 'youtube', 'reddit'];
@@ -39,12 +39,12 @@ getLimits(function(limits) {
       img.classList.add('site-list-icon');
   
       var domainSpan = document.createElement('div');
-      domainSpan.classList.add('list-item-text');
+      domainSpan.classList.add('list-item-domain-text');
       domainSpan.appendChild(document.createTextNode(item));
 
       var limitSpan = document.createElement('div');
       // limitSpan.contentEditable = true;
-      limitSpan.classList.add('list-item-text');
+      limitSpan.classList.add('list-item-limit-text');
       limitSpan.appendChild(document.createTextNode(getLimit(limits, item)));
   
       li.appendChild(img);
