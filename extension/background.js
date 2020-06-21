@@ -48,7 +48,10 @@ function ourAppUpdate(tabs) {
 }
 
 chrome.runtime.onInstalled.addListener(function () {
-  chrome.tabs.onUpdated.addListener(function () {
+  // chrome.tabs.onUpdated.addListener(function () {
+  //   chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => ourAppUpdate(tabs));
+  // });
+  chrome.tabs.onActivated.addListener(function () {
     chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => ourAppUpdate(tabs));
   });
 });

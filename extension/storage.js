@@ -90,8 +90,11 @@ function browsing(domain, callback) {
     );
     addDistracted(domain, function() {
       isInBlackList(domain, function(bool) {
+        console.log("domain");
+        console.log(domain);
         if (bool) {
           addDistracted(DISTRACTED_DOMAIN);
+          handleNotify();
         }
       });
     });
@@ -114,9 +117,7 @@ function browsing(domain, callback) {
         wrapper(val, function() {
           exceedsDistractedLimit(domain, function(val) {
             wrapper(val, function() {
-              isInBlackList(domain, function() {
-                exceedsDistractedLimit(DISTRACTED_DOMAIN, callback);
-              });
+              exceedsDistractedLimit(DISTRACTED_DOMAIN, callback);
             });
           });
         });
@@ -124,7 +125,6 @@ function browsing(domain, callback) {
       // tried so hard to make this aesthetic -_-
   }
   handleUpdate();
-  handleNotify();
 }
 
 function isInBlackList(domain, callback) {
