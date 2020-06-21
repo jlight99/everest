@@ -1,15 +1,56 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  </head>
-  <body>
-    <button id="todayAppTime">Today App Usage</button>
-    <button id="todayHourTime">Today Hourly Usage Split</button>
-    <button id="todayHourTimeStacked">Today Hourly Usage Stacked</button>
-    <br/>
-    <br/>
-    <div id="the_big_boi" style="width: 800px; height: 500px;"></div>
-    <script type="text/javascript" src="graphs.js"></script>
-  </body>
+
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    h1 {
+      font-size: 36px;
+      margin: 20px;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #the_big_boi {
+      width: 800px;
+      height: 500px;
+      margin: 30px;
+    }
+
+    #chart-buttons {
+      display: flex;
+      flex-direction: row;
+    }
+
+    button.chart {
+      margin: 10px;
+    }
+
+    button.chart:focus {
+      border: green;
+    }
+
+    button.chart {
+      background-color: none;
+      padding: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Analytics</h1>
+  <div id="the_big_boi"></div>
+  <div id="chart-buttons">
+    <button class="chart" id="todayAppTime">Today App Usage</button>
+    <button class="chart" id="todayHourTime">Today Hourly Usage Split</button>
+    <button class="chart" id="todayHourTimeStacked">Today Hourly Usage Stacked</button>
+  </div>
+  <script type="text/javascript" src="graphs.js"></script>
+</body>
+
 </html>

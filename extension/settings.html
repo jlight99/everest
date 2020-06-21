@@ -1,4 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <div>settings live here!</div>
+
+<head>
+  <style>
+    h1 {
+      font-size: 36px;
+      margin: 30px;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    li {
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      display: flex;
+    }
+    img {
+      margin-right: 5px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1>Settings</h1>
+  <div class="subtitle">
+    <img src="https://img.icons8.com/metro/26/000000/list.png"/>
+    Blacklisted sites
+  </div>
+  <ul id="blacklist"></ul>
+  <script type="text/javascript" src="settings.js"></script>
+</body>
+
 </html>
