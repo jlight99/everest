@@ -101,6 +101,32 @@ chrome.runtime.onInstalled.addListener(function () {
 //   });
 // });
 
+/**
+ * Testing analytics
+ */
 
-
-// newEntry(2012, 5, 30, 12, "youtube.com", 1263);
+// chrome.storage.local.clear();
+// 
+// newEntry(2012, 5, 30, 12, "youtube.com", 1263, function(data) {
+//   console.log("put");
+//   console.log(data);
+//   getAnalytics(function(data) {
+//     console.log("get");
+//     console.log(data);
+//   });
+//   newEntry(2020, 12, 2, 17, "youtube.com", 5, function() {
+//     getAnalytics(function(data) {
+//       console.log(data);
+//     });
+//     newEntry(2020, 12, 2, 17, "feacbook.com", 5, function() {
+//       getAnalytics(function(data) {
+//         console.log(data);
+//       });
+//       newEntry(2020, 12, 2, 17, "feacbook.com", 5, function() {
+//         getAnalytics(function(data) {
+//           console.log(data);
+//         });
+//       });
+//     });
+//   });
+// });

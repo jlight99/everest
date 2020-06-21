@@ -160,14 +160,6 @@ var cur_data = {
   }
 }
 
-function printS(key, val) {
-  function printInternal() {
-    print("Set " + key + " to: ");
-    print(val)
-  }
-  return printInternal;
-}
-
 function getAnalytics(callback) {
   get(OUR_APP_ANALYTICS_DATA, function(data) {
     console.log("analytics from storage:");
@@ -181,22 +173,24 @@ function getAnalytics(callback) {
   });
 }
 
-function g(map, keys, def = {}) {
+function getNestedMap(map, keys, def = {}) {
+  var temp = map;
   for (key in keys) {
-    if (!(key in map)) {
-      map[key] = def;
+    if (!(key in temp)) {
+      temp[key] = def;
     }
-    map = map[key];
+    temp = temp[key];
   }
-  return map;
+  return temp;
 }
 
-function newEntry(year, month, day, hour, site, seconds) {
-  // g(cur_data, [year, month, day, hour])[site] =
-  //     Math.min(SECONDS_IN_HOUR,
-  //         (cur_data[year][month][day][hour][site] || 0) + seconds);
-  // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, cur_data[year][month][day][hour][site]);
-  // save(K_DATA, cur_data, callback);
+function newEntry(year, month, day, hour, site, seconds, callback) {
+  getAnalytics(function(data) {
+    hourMap = getNestedMap(data, [year, month, day, hour]);
+    hourMap[site] = Math.min(SECONDS_IN_HOUR, (hourMap[site] || 0) + seconds);
+    save(OUR_APP_ANALYTICS_DATA, data, callback);
+  });
+  // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, hourMap[site]);
 }
 
 // "private" functions
