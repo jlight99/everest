@@ -113,8 +113,10 @@ function getLimit(domain, singleSession, callback) {
       domain = OUR_APP_SINGLE_SESSION_PREFIX + domain;
     }
     if (domain in limits) {
+      console.log("found limit for " + domain);
       callback(limits[domain]);
     } else {
+      console.log("no limit for " + domain);
       callback(NO_LIMIT);
     }
   });
@@ -191,6 +193,23 @@ function newEntry(year, month, day, hour, site, seconds, callback) {
   // TODO make newEntry faster
   // this is trying to save just the updated key
   // save({[KDATA]: {[year]: {[month]: {[day]: {[hour]: [site]}}}}}, hourMap[site]);
+}
+
+/**
+ * @param {*} callback only calls this IF the usage exceeds the limit
+ */
+function exceedsDailyLimit(year, month, day, hour, domain, callback) {
+  getAnalytics(function(data) {
+    function compareLimit(limit) {
+      if (limit != NO_LIMIT && m[domain] > limit * 60) {
+        callback(domain);
+      }
+    }
+    m = getNestedMap(data, [year, month, day, hour]);
+    if (domain in m) {
+      getLimit(domain, false, compareLimit);
+    }
+  });
 }
 
 // "private" functions

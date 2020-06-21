@@ -143,3 +143,18 @@ chrome.runtime.onInstalled.addListener(function () {
 //     });
 //   });
 // });
+
+/**
+ * Testing app overall limit
+ */
+
+// newEntry(2012, 5, 30, 12, "youtube.com", 1263, function(data) {
+//   newEntry(2020, 12, 2, 17, "facebook.com", 500, function() {
+//     addLimit("facebook.com", 2, false, function() {
+//       exceedsDailyLimit(2020, 12, 2, 17, "facebook.com", function(domain) {
+//         console.log("exceeds limit?");
+//         console.log(domain);
+//       });
+//     });
+//   });
+// });
