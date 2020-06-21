@@ -24,7 +24,7 @@
     "browser_action": {
         "default_popup": "popup.html"
     },
-    "content_security_policy": "script-src 'self' https://www.gstatic.com; object-src 'self'",
+    "content_security_policy": "script-src 'self' https://www.gstatic.com https://maxcdn.bootstrapcdn.com; object-src 'self'",
     "icons": {
         "16": "images/get_started16.png",
         "32": "images/get_started32.png",

@@ -28,23 +28,22 @@ function ourAppUpdate(tabs) {
       });
   }
 
+  function alarmListener() {
+    console.log("calling browsing");
+    browsing(domain, createNotification);
+  }
+
   function createAlarm() {
     // TODO replace alarm before publishing since alarms only fire once a minute in prod chrome
     // ref: https://developer.chrome.com/apps/app_codelab_alarms
-    chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: DISTRACTED_UPDATE_SECONDS / 60 });
-    chrome.alarms.onAlarm.addListener(function() {
-      console.log("calling browsing");
-      browsing(domain, createNotification);
-    });
-  }
-
-  isInBlackList(domain, function(bool) {
-    if (bool) {
-      createAlarm();
-    } else {
-      chrome.alarms.clearAll();
+    chrome.alarms.clearAll();
+    if (chrome.alarms.onAlarm.hasListener(alarmListener)) {
+      chrome.alarms.onAlarm.removeListener(alarmListener);
     }
-  });
+    chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: DISTRACTED_UPDATE_SECONDS / 60 });
+    chrome.alarms.onAlarm.addListener(alarmListener);
+  }
+  createAlarm();
 }
 
 chrome.runtime.onInstalled.addListener(function () {
