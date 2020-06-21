@@ -3,35 +3,53 @@ chrome.runtime.onInstalled.addListener(function () {
     chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => {
       if (tabs.length == 0) return;
       let url = tabs[0].url;
-      let blacklist = ['facebook', 'youtube'];
-      let isBlacklisted = false;
-      for (var i = 0; i < blacklist.length; i++) {
-        if (url.includes(blacklist[i])) {
-          isBlacklisted = true;
-          break;
+      getBlackList(function (blacklist) {
+        let blacklistedDomain;
+        for (var i = 0; i < blacklist.length; i++) {
+          if (url.includes(blacklist[i])) {
+            blacklistedDomain = blacklist[i];
+            break;
+          }
         }
-      }
-      if (isBlacklisted) {
-        // chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: 0.3 });
-        // chrome.alarms.onAlarm.addListener(function () {
-        //   alert("why are you distracted smh");
-        // });
-        var opt = {
-          iconUrl: "images/get_started48.png",
-          type: 'basic',
-          title: 'stop being distracted!',
-          message: 'smh get back to work',
-          priority: 1,
-          requireInteraction: true
-        };
-        chrome.notifications.create('notify1', opt, function() { console.log("Last error:", chrome.runtime.lastError); });
+        if (blacklistedDomain) {
+          chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: DISTRACTED_UPDATE_SECONDS / 60 });
+          chrome.alarms.onAlarm.addListener(function () {
+            console.log("calling browsing");
+            browsing(blacklistedDomain, function(msg) {
+              shouldNotify(blacklistedDomain, function(domain, limit) {
+                if (domain) {
+                  var opt = {
+                    iconUrl: "images/get_started48.png",
+                    type: 'basic',
+                    title: 'stop being distracted!',
+                    message: 'you have exceeded your limit of ' + limit + ' on ' + domain,
+                    priority: 1,
+                    requireInteraction: true
+                  };
+                  chrome.notifications.create('notify1', opt, function () { console.log("Last error:", chrome.runtime.lastError); });
+                } else {
+                  // alert('sad');
+                }
+              });
+            });
+          });
+          var opt = {
+            iconUrl: "images/get_started48.png",
+            type: 'basic',
+            title: 'stop being distracted!',
+            message: 'smh get back to work',
+            priority: 1,
+            requireInteraction: true
+          };
+          chrome.notifications.create('notify1', opt, function () { console.log("Last error:", chrome.runtime.lastError); });
 
-        // chrome.tabs.executeScript({
-        //   file: "insert.js"
-        // });
-      } else {
-        chrome.alarms.clearAll();
-      }
+          // chrome.tabs.executeScript({
+          //   file: "insert.js"
+          // });
+        } else {
+          chrome.alarms.clearAll();
+        }
+      });
     });
   });
 });
@@ -47,10 +65,25 @@ chrome.runtime.onInstalled.addListener(function () {
 //     console.log(value);
 //   })
 // }
-// // chrome.storage.local.clear();
-// distractedFor(function() {
+// chrome.storage.local.clear();
+// distractedFor("distracted", function() {
 //   console.log("done saving");
+//   getDistracted("distracted", function(data) {
+//     console.log("get distracted");
+//     console.log(data);
+//   });
+//   // get("our_appname_distracted_for", function(data) {
+//   //   console.log('hello');
+//   //   console.log(data);
+//   // })
 // });
+
+// getDistracted("", callback)
+//   getDistractedInternal(domain, function (distracted) {
+//     callback(distracted.elapsed);
+//   });
+// }
+
 // setTimeout(distractedFor, 5000);
 // distractedFor();
 // distractedFor();
@@ -116,9 +149,6 @@ chrome.runtime.onInstalled.addListener(function () {
 //   });
 // });
 
-/**
- * Testing analytics
- */
 
 // newEntry(2012, 5, 30, 12, "youtube.com", 1263, function(data) {
 //   console.log("put");

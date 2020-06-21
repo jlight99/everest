@@ -1,3 +1,4 @@
-const DISTRACTED_UPDATE_SECONDS = 5
-const NO_LIMIT = -1;
-const OUR_APP_SINGLE_SESSION_PREFIX = "single+session+"
+const DISTRACTED_UPDATE_SECONDS = 5;
+const NO_LIMIT = Infinity;
+const DEFAULT_BLACKLIST_LIMIT_SECONDS = 10;
+const OUR_APP_SINGLE_SESSION_PREFIX = "single+session+";
