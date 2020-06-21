@@ -39,12 +39,6 @@
     button.chart:focus {
       border: green;
     }
-
-    button.chart {
-      background-color: none;
-      padding: 8px;
-      font-size: 16px;
-    }
   </style>
 </head>
 
@@ -57,9 +51,9 @@
     <div id="the_big_boi"></div>
   </div>
     <div id="chart-buttons">
-    <button class="chart" id="todayAppTime">Today App Usage</button>
-    <button class="chart" id="todayHourTime">Today Hourly Usage Split</button>
-    <button class="chart" id="todayHourTimeStacked">Today Hourly Usage Stacked</button>
+    <button type="button" class="btn btn-primary chart" id="todayAppTime">Today App Usage</button>
+    <button type="button" class="btn btn-primary chart" id="todayHourTime">Today Hourly Usage Split</button>
+    <button type="button" class="btn btn-primary chart" id="todayHourTimeStacked">Today Hourly Usage Stacked</button>
   </div>
   <script type="text/javascript" src="graphs.js"></script>
 </body>

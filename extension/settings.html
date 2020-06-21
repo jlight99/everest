@@ -2,6 +2,8 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
   <style>
     h1 {
       font-size: 36px;
@@ -15,9 +17,16 @@
       align-items: center;
     }
 
+    ul {
+      margin-top: 20px;
+    }
+
     li {
-      font-size: 16px;
-      margin: 10px;
+      margin-right: 36px;
+    }
+
+    button {
+      margin: 10px 0;
     }
 
     .subtitle {
@@ -26,6 +35,10 @@
     }
     img {
       margin-right: 5px;
+    }
+
+    .hidden {
+      display: none;
     }
 
   </style>
@@ -38,6 +51,16 @@
     Blacklisted sites
   </div>
   <ul id="blacklist"></ul>
+  <div>
+    <ul class="list-group" id="blacklist"></ul>
+  </div>
+  <button type="button" class="btn btn-primary" id="add-to-blacklist">add</button>
+  <div id="add-input" class="hidden">
+    <label for="domain">Domain:</label>
+    <input type="text" id="add-domain-field" name="domain">
+    <button type="button" class="btn btn-success" id="submit-add-domain">add</button>
+    <button type="button" class="btn btn-warning" id="cancel-add-domain">cancel</button>
+  </div>
   <script type="text/javascript" src="constants.js"></script>
   <script type="text/javascript" src="storage.js"></script>
   <script type="text/javascript" src="settings.js"></script>
