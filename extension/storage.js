@@ -120,7 +120,11 @@ function browsing(domain, callback) {
           exceedsDistractedLimit(domain, function(val) {
             wrapper(val, function() {
               console.log('exceedsDistractedLimit');
-              exceedsDistractedLimit(DISTRACTED_DOMAIN, callback);
+              exceedsDistractedLimit(DISTRACTED_DOMAIN, function(val) {
+                if (val) {
+                  callback(val);
+                }
+              });
             });
           });
         });
@@ -238,6 +242,8 @@ function getDistracted(callback) {
  */
 function exceedsDistractedLimit(domain, callback) {
   getDistractedInternal(function(data) {
+    console.log("mushroom");
+    console.log(data);
     function compareLimit(limit) {
       if (data[domain].timestamp + SESSION_CONTINUE_MS >= new Date().getTime() &&
           limit != NO_LIMIT && 

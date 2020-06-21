@@ -15,7 +15,12 @@ function ourAppUpdate(tabs) {
       return 'you have exceeded your limit of ' + props.limit + ' minutes for ' + notif_domain;
     }
     console.log("return check");
+    console.log(props);
+    console.log(props.domain);
+    console.log(props.limit);
+    console.log(props.type);
     if (!props || !props.domain || !props.limit || !props.type) return;
+    console.log("after check");
 
     var opt = {
       iconUrl: "images/get_started48.png",
