@@ -157,18 +157,6 @@ function getDistracted(callback) {
   });
 }
 
-var cur_data = {
-  "2019": {
-    "12": {
-      "31": {
-        "23": {
-          "facebook.com": 59
-        }
-      }
-    }
-  }
-}
-
 function getAnalytics(callback) {
   get(OUR_APP_ANALYTICS_DATA, function(data) {
     console.log("analytics from storage:");
