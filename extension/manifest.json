@@ -2,9 +2,23 @@
     "name": "Everest",
     "version": "1.0",
     "description": "Increase productivity!",
-    "permissions": ["activeTab", "declarativeContent", "storage", "alarms", "tabs", "notifications"],
+    "permissions": [
+        "activeTab",
+        "declarativeContent",
+        "storage",
+        "alarms",
+        "tabs",
+        "notifications"
+    ],
     "background": {
-        "scripts": ["constants.js", "storage.js", "background.js"],
+        "scripts": [
+            "constants.js",
+            "storage.js",
+            "background.js",
+            "popup.js",
+            "graphs.js",
+            "settings.js"
+        ],
         "persistent": false
     },
     "browser_action": {
