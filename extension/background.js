@@ -55,9 +55,6 @@ function ourAppUpdate(tabs) {
 }
 
 chrome.runtime.onInstalled.addListener(function () {
-  // chrome.tabs.onUpdated.addListener(function () {
-  //   chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => ourAppUpdate(tabs));
-  // });
   chrome.tabs.onActivated.addListener(function () {
     console.log("happy");
     chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => ourAppUpdate(tabs));
@@ -161,8 +158,8 @@ console.log("let's get started");
 //   console.log("limits:");
 //   console.log(limits);
 // });
-// addLimit("https://www.facebook.com/", 100, true, function(v) {
-//   addLimit("https://www.facebook.com/", 200, false, function(v) {
+// addLimit("https://www.facebook.com/", 1, true, function(v) {
+//   addLimit("https://www.facebook.com/", 1, false, function(v) {
 //     addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
 //       getLimits(function(limits) {
 //         console.log("add x3 limits:");
@@ -171,16 +168,6 @@ console.log("let's get started");
 //     });
 //   });
 // });
-addLimit("wikipedia", 1, true, function(v) {
-  addLimit("facebook", 1, false, function(v) {
-    addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
-      getLimits(function(limits) {
-        console.log("add x3 limits:");
-        console.log(limits);
-      });
-    });
-  });
-});
 
 /**
  * Testing blacklist
@@ -245,7 +232,6 @@ addLimit("wikipedia", 1, true, function(v) {
 /**
  * Testing app overall limit
  */
-
 // newEntry(2012, 5, 30, 12, "youtube.com", 1263, function(data) {
 //   newEntry(2020, 12, 2, 17, "facebook.com", 500, function() {
 //     addLimit("facebook.com", 2, false, function() {

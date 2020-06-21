@@ -175,21 +175,13 @@ function getLimit(domain, singleSession, callback) {
     if (singleSession) {
       domain = OUR_APP_SINGLE_SESSION_PREFIX + domain;
     }
-    console.log("limits");
-    console.log(limits);
-    console.log("domain");
-    console.log(domain);
-    for (const [site, limit] in limits) {
-      console.log("site");
-      console.log(site);
-      if (domain.includes(site)) {
-        console.log("found limit for " + domain);
-        callback(limit);
-        return;
-      }
+    if (domain in limits) {
+      console.log("found limit for " + domain);
+      callback(limits[domain]);
+    } else {
+      console.log("no limit for " + domain);
+      callback(NO_LIMIT);
     }
-    console.log("no limit for " + domain);
-    callback(NO_LIMIT);
   });
 }
 
@@ -298,13 +290,20 @@ function newEntry(year, month, day, hour, site, seconds, callback) {
 function exceedsDailyLimit(year, month, day, hour, domain, callback) {
   getAnalytics(function(data) {
     function compareLimit(limit) {
+      console.log("domaindailylimit");
+      console.log(domain);
+      console.log(m[domain]);
+      console.log(limit);
       if (limit != NO_LIMIT && m[domain] > limit * 60) {
         callback({limit: limit, domain: domain, type: LIMIT_EXCEEDED_TYPE_OVERALL});
       } else {
         callback(null);
       }
     }
+    console.log("dailylimit -> domain_map");
+    console.log(domain);
     m = getNestedMap(data, [year, month, day, hour]);
+    console.log(m);
     if (domain in m) {
       getLimit(domain, false, compareLimit);
     } else {
