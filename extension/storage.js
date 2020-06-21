@@ -108,6 +108,7 @@ function browsing(domain, callback) {
         func();
       }
     }
+    console.log('exceedsDailyLimit');
     exceedsDailyLimit(
       d.getFullYear(),
       d.getMonth(),
@@ -115,8 +116,10 @@ function browsing(domain, callback) {
       d.getHours(),
       domain, function(val) {
         wrapper(val, function() {
+          console.log('exceedsDistractedLimit ' + domain);
           exceedsDistractedLimit(domain, function(val) {
             wrapper(val, function() {
+              console.log('exceedsDistractedLimit');
               exceedsDistractedLimit(DISTRACTED_DOMAIN, callback);
             });
           });
@@ -129,7 +132,13 @@ function browsing(domain, callback) {
 
 function isInBlackList(domain, callback) {
   getBlackList(function(blacklist) {
-    callback(blacklist.includes(domain));
+    for (var i = 0; i < blacklist.length; i++) {
+      if (domain.includes(blacklist[i])) {
+        callback(true);
+        return;
+      }
+    }
+    callback(false);
   });
 }
 
@@ -162,13 +171,21 @@ function getLimit(domain, singleSession, callback) {
     if (singleSession) {
       domain = OUR_APP_SINGLE_SESSION_PREFIX + domain;
     }
-    if (domain in limits) {
-      console.log("found limit for " + domain);
-      callback(limits[domain]);
-    } else {
-      console.log("no limit for " + domain);
-      callback(NO_LIMIT);
+    console.log("limits");
+    console.log(limits);
+    console.log("domain");
+    console.log(domain);
+    for (const [site, limit] in limits) {
+      console.log("site");
+      console.log(site);
+      if (domain.includes(site)) {
+        console.log("found limit for " + domain);
+        callback(limit);
+        return;
+      }
     }
+    console.log("no limit for " + domain);
+    callback(NO_LIMIT);
   });
 }
 

@@ -14,10 +14,7 @@
         "scripts": [
             "constants.js",
             "storage.js",
-            "background.js",
-            "popup.js",
-            "graphs.js",
-            "settings.js"
+            "background.js"
         ],
         "persistent": false
     },

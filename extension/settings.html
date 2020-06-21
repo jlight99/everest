@@ -41,8 +41,8 @@
       text-align: left;
     }
 
-    img {
-      margin-right: 5px;
+    .subtitle img {
+      margin-right: 10px;
     }
     img.site-list-icon {
       width: 30px;
@@ -51,12 +51,24 @@
     img.trash-icon {
       width: 18px;
       padding: 0;
-      margin-left: 25px;
-      margin-right: -10px;
+      margin-right: -8px;
+    }
+    img.edit-icon {
+      width: 18px;
+      padding: 0;
+    }
+
+    .list-item-text {
+      width: 120px;
+      margin-left: 5px;
     }
 
     .hidden {
       display: none;
+    }
+
+    .editable {
+      border: blue;
     }
 
   </style>
@@ -66,13 +78,13 @@
   <h1>Settings</h1>
   <div class="subtitle">
     <img src="https://img.icons8.com/metro/26/000000/list.png"/>
-    Blacklisted sites
+    Blacklisted Sites
   </div>
   <ul id="blacklist"></ul>
   <div>
     <ul class="list-group" id="blacklist"></ul>
   </div>
-  <button type="button" class="btn btn-primary" id="add-to-blacklist">add</button>
+  <button type="button" class="btn btn-primary" id="add-to-blacklist">Add to blacklist</button>
   <div id="add-input" class="hidden">
     <label for="domain">Domain:</label>
     <input type="text" id="add-domain-field" name="domain">

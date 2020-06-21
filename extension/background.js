@@ -166,6 +166,16 @@ console.log("let's get started");
 //     });
 //   });
 // });
+addLimit("wikipedia", 1, true, function(v) {
+  addLimit("facebook", 1, false, function(v) {
+    addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
+      getLimits(function(limits) {
+        console.log("add x3 limits:");
+        console.log(limits);
+      });
+    });
+  });
+});
 
 /**
  * Testing blacklist
