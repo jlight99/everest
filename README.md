@@ -7,7 +7,17 @@ https://www.youtube.com/watch?v=a3WDiOYo1a0
 https://devpost.com/software/slice-yk38l9
 
 ### screenshots:
-to come
+##### analytics page:
+the analytics page provides insight into where all your time on chrome is spent
+![analytics page 1](https://github.com/jlight99/everest/blob/master/extension/images/screenshots/analytics-1.png?raw=true)
+![analytics page 2](https://github.com/jlight99/everest/blob/master/extension/images/screenshots/analytics-2.png?raw=true)
+![analytics page 3](https://github.com/jlight99/everest/blob/master/extension/images/screenshots/analytics-3.png?raw=true)
+
+##### settings page:
+users can configure their list of blacklisted "distraction" sites and set time limits for how long they could spent on each site before being harassed by our notifications.
+![settings page](https://github.com/jlight99/everest/blob/master/extension/images/screenshots/settings.png?raw=true)
+![settings page add](https://github.com/jlight99/everest/blob/master/extension/images/screenshots/settings-add.png?raw=true)
+![settings page edit](https://github.com/jlight99/everest/blob/master/extension/images/screenshots/settings-edit.png?raw=true)
 
 ### acknowledgements:
 <a href="https://icons8.com/icon/773/list">List icon by Icons8</a>
