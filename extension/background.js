@@ -94,22 +94,12 @@ console.log("let's get started");
 //   console.log("limits:");
 //   console.log(limits);
 // });
-// addLimit("instagram.com", 60, false, function(v) {
-//   addLimit("twitter.com", 60, false, function(v) {
-//     addLimit("bimesh.dev", 15, true, function(v) {
+// addLimit("https://www.facebook.com/", 100, true, function(v) {
+//   addLimit("https://www.facebook.com/", 200, false, function(v) {
+//     addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
 //       getLimits(function(limits) {
 //         console.log("add x3 limits:");
 //         console.log(limits);
-//         removeLimit("instagram.com", false, function() {
-//           getLimits(function(limits) {
-//             console.log("add x3, r x1 limits:");
-//             console.log(limits);
-//           });
-//           getLimit("bimesh.dev", true, function(limit) {
-//             console.log("bimesh limit:");
-//             console.log(limit);
-//           });
-//         });
 //       });
 //     });
 //   });

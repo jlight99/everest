@@ -222,11 +222,12 @@ function getDistracted(callback) {
 function exceedsDistractedLimit(domain, callback) {
   getDistractedInternal(function(data) {
     function compareLimit(limit) {
-      if (data[domain].timestamp + SESSION_CONTINUE_MS < new Date().getTime()) {
-        return;
-      }
-      if (limit != NO_LIMIT && data[domain].elapsed > limit * 60) {
+      if (data[domain].timestamp + SESSION_CONTINUE_MS >= new Date().getTime() &&
+          limit != NO_LIMIT && 
+          data[domain].elapsed > limit * 60) {
         callback({limit: limit, domain: domain, type: LIMIT_EXCEEDED_TYPE_CONTINUOUS});
+      } else {
+        callback(null);
       }
     }
     if (domain in data) {
