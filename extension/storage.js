@@ -11,10 +11,10 @@ Example usage:
 save('my_key', {ellen: "is a potatoe"});
 */
 function save(key, val, func) {
-  console.log("saving");
-  console.log(key);
-  console.log(val);
-  console.log(func);
+  // console.log("saving");
+  // console.log(key);
+  // console.log(val);
+  // console.log(func);
   chrome.storage.local.set({[key]: val}, func);
 }
 

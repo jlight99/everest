@@ -14,7 +14,7 @@ function getBlacklist(callback) {
   var blacklistKey = "our_appname_blacklist_key";
   chrome.storage.local.get(blacklistKey, function(blacklist) {
     if (!blacklist || !blacklist[blacklistKey]) {
-      blacklist = ['facebook', 'youtube', 'fanfiction'];
+      blacklist = ['facebook', 'youtube', 'reddit'];
       chrome.storage.local.set({[blacklistKey]: blacklist}, function() {
         console.log('initialized empty blacklist!');
         callback(blacklist);
