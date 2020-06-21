@@ -1,6 +1,7 @@
 chrome.runtime.onInstalled.addListener(function () {
   chrome.tabs.onUpdated.addListener(function () {
-    chrome.tabs.query({ active: true }, tabs => {
+    chrome.tabs.query({ active: true, currentWindow: true, status: 'complete' }, tabs => {
+      if (tabs.length == 0) return;
       let url = tabs[0].url;
       let blacklist = ['facebook', 'youtube'];
       let isBlacklisted = false;
@@ -11,10 +12,25 @@ chrome.runtime.onInstalled.addListener(function () {
         }
       }
       if (isBlacklisted) {
-        chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: 0.2 });
-        chrome.alarms.onAlarm.addListener(function () {
-          alert("why are you distracted smh");
-        });
+        // chrome.alarms.create("myAlarm", { delayInMinutes: 0, periodInMinutes: 0.3 });
+        // chrome.alarms.onAlarm.addListener(function () {
+        //   alert("why are you distracted smh");
+        // });
+        var opt = {
+          iconUrl: "images/get_started48.png",
+          type: 'basic',
+          title: 'stop being distracted!',
+          message: 'smh get back to work',
+          priority: 1,
+          requireInteraction: true
+        };
+        chrome.notifications.create('notify1', opt, function() { console.log("Last error:", chrome.runtime.lastError); });
+
+        // chrome.tabs.executeScript({
+        //   file: "insert.js"
+        // });
+      } else {
+        chrome.alarms.clearAll();
       }
     });
   });
