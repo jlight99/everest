@@ -66,15 +66,16 @@ console.log("let's get started");
 /**
  * Testing background updating
  */
-function addTestBlackLists() {
-  addToBlackList("https://www.facebook.com/", function() {
-    addToBlackList("https://www.google.ca/", function() {
-      getBlackList(function(bl) {
-        console.log(bl);
-      });
-    });
-  });
-}
+// function addTestBlackLists() {
+//   addToBlackList("https://www.facebook.com/", function() {
+//     addToBlackList("https://www.google.ca/", function() {
+//       getBlackList(function(bl) {
+//         console.log(bl);
+//       });
+//     });
+//   });
+// }
+// addTestBlackLists();
 
 
 // chrome.runtime.onInstalled.addListener(function () {
@@ -160,18 +161,18 @@ function addTestBlackLists() {
 //   console.log("limits:");
 //   console.log(limits);
 // });
-function addTestLimits() {
-  addLimit("https://www.facebook.com/", 1, true, function(v) {
-    addLimit("https://www.facebook.com/", 1, false, function(v) {
-      addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
-        getLimits(function(limits) {
-          console.log("add x3 limits:");
-          console.log(limits);
-        });
-      });
-    });
-  });
-}
+// function addTestLimits() {
+//   addLimit("https://www.facebook.com/", 1, true, function(v) {
+//     addLimit("https://www.facebook.com/", 1, false, function(v) {
+//       addLimit(DISTRACTED_DOMAIN, 1, false, function(v) {
+//         getLimits(function(limits) {
+//           console.log("add x3 limits:");
+//           console.log(limits);
+//         });
+//       });
+//     });
+//   });
+// }
 // addTestLimits();
 
 /**
@@ -246,7 +247,7 @@ function fakeData(h, callback) {
 }
 
 // chrome.storage.local.clear();
-addFakes();
+// addFakes();
 
 /**
  * Testing app overall limit

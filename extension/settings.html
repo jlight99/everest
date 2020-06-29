@@ -2,7 +2,11 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link 
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
 
   <style>
     h1 {
@@ -88,12 +92,21 @@
   <div>
     <ul class="list-group" id="blacklist"></ul>
   </div>
-  <button type="button" class="btn btn-primary" id="add-to-blacklist">Add to blacklist</button>
+  <button type="button" class="btn btn-primary" id="add-to-blacklist">
+    Add to blacklist
+  </button>
   <div id="add-input" class="hidden">
-    <label for="domain">Domain:</label>
+    <label for="add-domain-field">Domain:</label>
     <input type="text" id="add-domain-field" name="domain">
-    <button type="button" class="btn btn-success" id="submit-add-domain">add</button>
-    <button type="button" class="btn btn-warning" id="cancel-add-domain">cancel</button>
+    <button type="button" class="btn btn-success" id="submit-add-domain">
+      add
+    </button>
+    <button type="button" class="btn btn-warning" id="cancel-add-domain">
+      cancel
+    </button>
+    <br/>
+    <label for="add-domain-limit">Limit (minutes):</label>
+    <input type="text" id="add-domain-limit" name="limit">
   </div>
   <script type="text/javascript" src="constants.js"></script>
   <script type="text/javascript" src="storage.js"></script>

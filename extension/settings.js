@@ -1,10 +1,5 @@
-var blacklistKey = "our_appname_blacklist_key";
 var defaultLimits = {
-  'facebook': 2,
-  'youtube': 5,
-  'reddit': 5,
-  'instagram': 3,
-  'twitter': 1
+  'default_limit': 2,
 }
 var domainImgs = {
   'facebook': 'images/facebook.svg',
@@ -118,6 +113,7 @@ function getImgSrc(domain) {
 var addToBlacklistForm = document.getElementById('add-input');
 
 var addDomainField = document.getElementById('add-domain-field');
+var addDomainLimit = document.getElementById('add-domain-limit');
 
 var addToBlacklistBtn = document.getElementById('add-to-blacklist');
 addToBlacklistBtn.addEventListener("click", function() {
@@ -129,11 +125,10 @@ var submitAddDomainBtn = document.getElementById('submit-add-domain');
 submitAddDomainBtn.addEventListener("click", function(evt) {
   addToBlacklistForm.classList.add('hidden');
   addToBlacklistBtn.classList.remove('hidden');
+  const curDomain = document.getElementById('add-domain-field').value;
+  const curLimit = document.getElementById('add-domain-limit').value;
   getLimits(function(limits) {
     console.log(limits);
-    if (Object.keys(limits).length === 0 && limits.constructor === Object) {
-      limits = defaultLimits;
-    }
     addToBlackList(addDomainField.value, function() {
       var blacklistElement = document.getElementById('blacklist');
 
@@ -141,17 +136,17 @@ submitAddDomainBtn.addEventListener("click", function(evt) {
       li.className = "list-group-item";
 
       var img = document.createElement('img');
-      img.src = getImgSrc(addDomainField.value);
+      img.src = getImgSrc(curDomain);
       img.classList.add('site-list-icon');
 
       var domainSpan = document.createElement('div');
-      domainSpan.classList.add('list-item-text');
-      domainSpan.appendChild(document.createTextNode(addDomainField.value));
+      domainSpan.classList.add('list-item-domain-text');
+      domainSpan.appendChild(document.createTextNode(curDomain));
 
       var limitSpan = document.createElement('div');
       // limitSpan.contentEditable = true;
-      limitSpan.classList.add('list-item-text');
-      limitSpan.appendChild(document.createTextNode(getLimit(limits, addDomainField.value)));
+      limitSpan.classList.add('list-item-limit-text');
+      limitSpan.appendChild(document.createTextNode(curLimit + ' min'));
 
       li.appendChild(img);
       li.appendChild(domainSpan);
@@ -160,6 +155,9 @@ submitAddDomainBtn.addEventListener("click", function(evt) {
       li.appendChild(getEditButton());
       blacklistElement.appendChild(li);
       addDomainField.value = '';
+    });
+    addLimit(addDomainField.value, addDomainLimit.value, false, function() {
+      console.log("Added limit of %d minutes to %s", curLimit, curDomain);
     });
   });
 });
